@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script src="BressAlg.js"></script>
+        <title></title>
+    </head>
+
+    <body>
+        Grid Dimension: <input id="grid-dim" type="text" maxlength="3" value="50">
+        <input type="button" value="Set" onclick="setGrid()"><br>
+        <div id="canvas"></div>
+        <input type="button" value="Draw Pixel" onclick="grid.drawLine(false)">
+        <input type="button" value="Draw Line" onclick="grid.drawLine(true)">
+        <input type="button" value="Reset" onclick="grid.reset()"><br>
+        <div id="info">
+            Point 1: <span id="point1"></span><br>
+            Point 2: <span id="point2"></span><br>
+            dx: <span id="dx"></span><br>
+            dy: <span id="dy"></span><br>
+            x: <span id="x"></span><br>
+            y: <span id="y"></span><br>
+            d: <span id="d"></span><br>
+        </div>
+    </body>
+
+    <script src="main.js"></script>
+</html>
