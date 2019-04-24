@@ -11,6 +11,7 @@ function Grid(size, canvas) {
     this.size = size // size of all squares (uniform)
     this.canvas = canvas
     this.arr = [] // 2D array of squares
+    this.stepSquares = [] // step variables
     this.dim = canvas.width / this.size
     this.selected = 0 // squares selected
     this.bressMode = true // true: draw line at once, false: step
@@ -53,6 +54,7 @@ function Grid(size, canvas) {
     // deselect squares and reset algorithm variables
     this.reset = function() {
         this.draw()
+        this.stepSquares = []
         this.squareA = null
         this.squareB = null
         this.selected = 0
@@ -127,6 +129,18 @@ function Grid(size, canvas) {
         this.canvas.ctx.fill()
     }
 
+    // draw squares in the stepSquares array
+    this.drawStepSquares = function(dots) {
+        this.draw() // clear grid
+
+        // draw each square
+        for (let i = 0; i < this.stepSquares.length; i++)
+            this.drawSquare(this.stepSquares[i])
+        this.drawSquare(this.squareB) // draw last square
+
+        if (dots) // if true, draw dots on the last square drawn
+            this.drawDots(this.stepSquares[this.stepSquares.length - 1])
+    }
 
     // draw line between two squares using the empty squares between them
     this.drawLine = function(bressMode) {
@@ -181,9 +195,9 @@ function Grid(size, canvas) {
 
             if (this.x < x1) { // if x behind the end point
                 let square = this.getSquareFromCoord(this.x, this.y)
-                this.drawSquare(square)
-                if (this.yi > 0) // don't draw dots for negative slopes
-                    this.drawDots(square)
+                this.stepSquares.push(square) // keep track of the squares that've been stepped through
+                this.drawStepSquares(this.yi > 0) // don't draw dots for negative slopes
+
                 updateXYD(this.x, this.y, this.d)
 
                 if (this.d > 0) { // see bress algorithm documentation
@@ -235,7 +249,8 @@ function Grid(size, canvas) {
 
             if (this.y < y1) {
                 let square = this.getSquareFromCoord(this.x, this.y)
-                this.drawSquare(square)
+                this.stepSquares.push(square)
+                this.drawStepSquares()
                 updateXYD(this.x, this.y, this.d)
 
                 if (this.d > 0) {
